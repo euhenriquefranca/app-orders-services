@@ -67,7 +67,6 @@ function AuthProvider({ children }) {
   async function storageUser(res) {
     await AsyncStorage.setItem('Auth_user', JSON.stringify(res));
   }
-
   async function signOut() {
     await AsyncStorage.clear().then(() => {
       setUser(null);
@@ -76,7 +75,14 @@ function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ signed: !!user, user, loading, signUp, signIn, signOut }}>
+      value={{
+        signed: !!user,
+        user,
+        loading,
+        signUp,
+        signIn,
+        signOut,
+      }}>
       {children}
     </AuthContext.Provider>
   );

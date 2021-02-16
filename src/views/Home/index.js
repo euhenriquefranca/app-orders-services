@@ -1,20 +1,17 @@
-import AsyncStorage from '@react-native-community/async-storage';
-import { createStackNavigator } from '@react-navigation/stack';
 import React, { useContext } from 'react';
-import { Text, View, Button } from 'react-native';
-
 import { AuthContext } from '../../context/auth';
+import Header from '../../components/Header';
+import { Background, Container, Nome } from './styles';
 
 export default function Home() {
-  const { user, signOut } = useContext(AuthContext);
-  console.log(user, 'user');
-  let user_storage = AsyncStorage.getItem('user');
+  const { user } = useContext(AuthContext);
 
   return (
-    <View>
-      <Text>Home</Text>
-      <Text>{user && <Text>{user_storage.username}</Text>}</Text>
-      <Button title="Sair da Conta" onPress={() => signOut()} />
-    </View>
+    <Background>
+      <Header />
+      <Container>
+        <Nome>Seja Bem-vindo!</Nome>
+      </Container>
+    </Background>
   );
 }

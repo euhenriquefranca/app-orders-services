@@ -1,4 +1,4 @@
-// import 'react-native-gesture-handler';
+import 'react-native-gesture-handler';
 // import React from 'react';
 // import { StatusBar, View } from 'react-native';
 // import { NavigationContainer } from '@react-navigation/native';
@@ -84,7 +84,6 @@
 //   },
 // };
 
-import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { View, StatusBar } from 'react-native';
