@@ -113,6 +113,24 @@ function AuthProvider({ children }) {
     return update;
   }
 
+  async function createClient(user) {
+    const url = `${config.API_URL}/clients`;
+    await axios
+      .post(url, user, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(res => {
+        console.log('criado com sucesso', res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -127,6 +145,7 @@ function AuthProvider({ children }) {
         signOut,
         clientList,
         updateClient,
+        createClient,
       }}>
       {children}
     </AuthContext.Provider>

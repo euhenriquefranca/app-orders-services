@@ -8,20 +8,22 @@ import { Container, Background, Nome, Form } from './styles';
 
 export default function ClientForm({ route, navigation }) {
   // const { dispatch } = useContext(UsersContext);
-  const { clients, updateClient, update } = useContext(AuthContext);
+  const { clients, updateClient, update, createClient } = useContext(
+    AuthContext
+  );
 
   const [user, setUser] = useState(route.params ? route.params : {});
 
   const onSubmitForm = async () => {
-    // dispatch({
-    //   type: user.id ? TYPES.UPDATE_USER : TYPES.CREATE_USER,
-    //   payload: user,
-    // });
-    await updateClient(user.id, user);
-    setUser({ ...update });
-    // console.log(updated, '@@@@@@@@@@@@');
-    console.log(clients, 'clients');
-    navigation.goBack();
+    if (user.id) {
+      await updateClient(user.id, user);
+      setUser({ ...update });
+      console.log(clients, 'clients');
+      navigation.goBack();
+    } else {
+      await createClient(user);
+      navigation.goBack();
+    }
   };
 
   const onChangeText = key => value => setUser({ ...user, [key]: value });
