@@ -10,6 +10,7 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
+  const [update, setUpdate] = useState([]);
 
   useEffect(() => {
     async function loadStorage() {
@@ -84,12 +85,32 @@ function AuthProvider({ children }) {
         },
       })
       .then(res => {
-        setClients(res.data);
-        console.log(res.data);
+        setClients(res.data ? res.data : setLoading(true));
+        console.log(update, 'list clients');
       })
       .catch(error => {
         console.error(error);
       });
+  }
+
+  async function updateClient(id, data) {
+    const url = `${config.API_URL}/clients/${id}`;
+    await axios
+      .put(url, data, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(res => {
+        console.log('atulizado com sucesso', data);
+        setUpdate(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    return update;
   }
 
   return (
@@ -99,10 +120,13 @@ function AuthProvider({ children }) {
         user,
         loading,
         clients,
+        update,
+        setLoading,
         signUp,
         signIn,
         signOut,
         clientList,
+        updateClient,
       }}>
       {children}
     </AuthContext.Provider>

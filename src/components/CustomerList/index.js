@@ -10,7 +10,6 @@ export default function GetUserItem({ data }) {
 
   const navigationToForm = (data = null) => () =>
     navigation.navigate('ClientForm', data);
-  console.log(data, 'dataaa');
 
   const confirmUserDelete = data => () => {
     Alert.alert('Excluir Usuário', 'Deseja excluir o usuário?', [

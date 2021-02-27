@@ -1,5 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Text, TextInput, View, StyleSheet, Button } from 'react-native';
+import { set } from 'react-native-reanimated';
 import Header from '../../components/Header';
 // import UsersContext, { TYPES } from '../context/UsersContext';
 import { AuthContext } from '../../context/auth';
@@ -7,15 +8,19 @@ import { Container, Background, Nome, Form } from './styles';
 
 export default function ClientForm({ route, navigation }) {
   // const { dispatch } = useContext(UsersContext);
-  const { clients } = useContext(AuthContext);
+  const { clients, updateClient, update } = useContext(AuthContext);
 
   const [user, setUser] = useState(route.params ? route.params : {});
 
-  const onSubmitForm = () => {
-    dispatch({
-      type: user.id ? TYPES.UPDATE_USER : TYPES.CREATE_USER,
-      payload: user,
-    });
+  const onSubmitForm = async () => {
+    // dispatch({
+    //   type: user.id ? TYPES.UPDATE_USER : TYPES.CREATE_USER,
+    //   payload: user,
+    // });
+    await updateClient(user.id, user);
+    setUser({ ...update });
+    // console.log(updated, '@@@@@@@@@@@@');
+    console.log(clients, 'clients');
     navigation.goBack();
   };
 
