@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Alert, View, StyleSheet } from 'react-native';
 import { Button, Icon, ListItem } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
+import { AuthContext } from '../../context/auth';
 
 import { Container } from './styles';
 
 export default function GetUserItem({ data }) {
+  const { deleteClient } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const navigationToForm = (data = null) => () =>
@@ -15,7 +17,7 @@ export default function GetUserItem({ data }) {
     Alert.alert('Excluir Usuário', 'Deseja excluir o usuário?', [
       {
         text: 'Sim',
-        onPress: () => dispatch({ type: TYPES.DELETE_USER, payload: data }),
+        onPress: () => deleteClient(data.id),
       },
       { text: 'Não' },
     ]);
@@ -39,7 +41,7 @@ export default function GetUserItem({ data }) {
             <Button
               type="clear"
               icon={<Icon name="delete" color="red" />}
-              // onPress={confirmUserDelete(item)}
+              onPress={confirmUserDelete(data)}
             />
           </View>
         </ListItem.Content>

@@ -11,7 +11,7 @@ import { Icon } from 'react-native-elements';
 export default function ClientList({ navigation }) {
   // const navigation = useNavigation();
   // const { state, movie, dispatch } = useContext(UsersContext);
-  const { state, clients, clientList, setLoading } = useContext(AuthContext);
+  const { state, clients, clientList, deleteClient } = useContext(AuthContext);
   const [load, setLoad] = useState(true);
   useEffect(() => {
     clientList();

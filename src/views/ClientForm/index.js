@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Text, TextInput, View, StyleSheet, Button } from 'react-native';
+import {
+  Text,
+  TextInput,
+  View,
+  StyleSheet,
+  Button,
+  KeyboardAvoidingView,
+  ScrollView,
+} from 'react-native';
 import { set } from 'react-native-reanimated';
 import Header from '../../components/Header';
 // import UsersContext, { TYPES } from '../context/UsersContext';
@@ -30,54 +38,61 @@ export default function ClientForm({ route, navigation }) {
 
   return (
     <Background>
-      <Container>{/* <Nome>Cadastro de Clientes</Nome> */}</Container>
+      {/* // <Container><Nome>Cadastro de Clientes</Nome></Container> */}
       <Form>
-        <View style={style.form}>
-          <Text>Name</Text>
-          <TextInput
-            style={style.input}
-            onChangeText={onChangeText('client_name')}
-            placeholder="Informe o nome"
-            value={user.client_name}
-          />
-          <Text>CNPJ</Text>
-          <TextInput
-            style={style.input}
-            onChangeText={onChangeText('cnpj')}
-            placeholder="Informe o CNPJ"
-            value={user.cnpj}
-          />
+        <ScrollView>
+          <KeyboardAvoidingView style={style.container} behavior="padding">
+            <View style={style.form}>
+              <Text>Name</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('client_name')}
+                placeholder="Informe o nome"
+                value={user.client_name}
+              />
+              <Text>CNPJ</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('cnpj')}
+                placeholder="Informe o CNPJ"
+                value={user.cnpj}
+              />
 
-          <Text>Email</Text>
-          <TextInput
-            style={style.input}
-            onChangeText={onChangeText('email')}
-            placeholder="Informe o email"
-            value={user.email}
-          />
-          <Text>Phone</Text>
-          <TextInput
-            style={style.input}
-            onChangeText={onChangeText('phone')}
-            placeholder="Informe o Phone"
-            value={user.phone}
-          />
-          <Text>Type</Text>
-          <TextInput
-            style={style.input}
-            onChangeText={onChangeText('type_client')}
-            placeholder="Informe o Type"
-            value={user.type_client}
-          />
+              <Text>Email</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('email')}
+                placeholder="Informe o email"
+                value={user.email}
+              />
+              <Text>Phone</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('phone')}
+                placeholder="Informe o Phone"
+                value={user.phone}
+              />
+              <Text>Type</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('type_client')}
+                placeholder="Informe o Type"
+                value={user.type_client}
+              />
 
-          <Button title="Salvar" onPress={onSubmitForm} />
-        </View>
+              <Button title="Salvar" onPress={onSubmitForm} />
+            </View>
+          </KeyboardAvoidingView>
+        </ScrollView>
       </Form>
     </Background>
   );
 }
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   form: {
     padding: 12,
   },

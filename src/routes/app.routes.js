@@ -6,7 +6,9 @@ import { Button, Icon } from 'react-native-elements';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import ClientList from '../views/ClientList';
+import MyOS from '../views/MyOS';
 import ClientForm from '../views/ClientForm';
+import NewOS from '../views/NewOS';
 
 const AppDrawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +32,7 @@ function Drawer() {
       <AppDrawer.Screen name="Home" component={Home} />
       <AppDrawer.Screen name="Perfil" component={Profile} />
       <AppDrawer.Screen name="Lista de Clientes" component={ClientList} />
+      <AppDrawer.Screen name="Minhas OS" component={MyOS} />
     </AppDrawer.Navigator>
   );
 }
@@ -63,6 +66,29 @@ export default AppRoutes = () => {
         component={ClientForm}
         options={{
           title: 'Formulário de Clientes',
+          headerStyle: { backgroundColor: '#131313' },
+        }}
+      />
+      <Stack.Screen
+        name="MyOS"
+        component={MyOS}
+        options={({ navigation }) => ({
+          title: 'Minhas OS',
+          headerShown: false,
+          headerRight: () => (
+            <Button
+              onPress={() => navigation.navigate('NewOS')}
+              type="clear"
+              icon={<Icon name="add" size={25} color="white" />}
+            />
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="NewOS"
+        component={NewOS}
+        options={{
+          title: 'Lista de OS',
           headerStyle: { backgroundColor: '#131313' },
         }}
       />

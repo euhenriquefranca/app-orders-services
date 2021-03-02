@@ -1,5 +1,4 @@
 import React, { useState, createContext, useEffect } from 'react';
-import Api from '../services/Api';
 import config from '../../config';
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -130,6 +129,21 @@ function AuthProvider({ children }) {
         console.log(error);
       });
   }
+  async function deleteClient(id) {
+    const url = `${config.API_URL}/clients/${id}`;
+    await axios
+      .delete(url, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(response => {
+        console.log(response, 'response');
+      });
+    clientList();
+  }
 
   return (
     <AuthContext.Provider
@@ -146,6 +160,7 @@ function AuthProvider({ children }) {
         clientList,
         updateClient,
         createClient,
+        deleteClient,
       }}>
       {children}
     </AuthContext.Provider>
