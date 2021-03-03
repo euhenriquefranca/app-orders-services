@@ -10,6 +10,8 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [clients, setClients] = useState([]);
   const [update, setUpdate] = useState([]);
+  const [list_order, setOrder] = useState([]);
+  const [new_os, setNew] = useState(false);
 
   useEffect(() => {
     async function loadStorage() {
@@ -85,6 +87,7 @@ function AuthProvider({ children }) {
       })
       .then(res => {
         setClients(res.data ? res.data : setLoading(true));
+        setNew(false);
         console.log(update, 'list clients');
       })
       .catch(error => {
@@ -144,6 +147,22 @@ function AuthProvider({ children }) {
       });
     clientList();
   }
+  async function listOrder() {
+    const url = `${config.API_URL}/order_of_services`;
+    await axios
+      .get(url, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(response => {
+        setOrder(response.data);
+        setNew(true);
+        console.log(response, 'response');
+      });
+  }
 
   return (
     <AuthContext.Provider
@@ -153,6 +172,8 @@ function AuthProvider({ children }) {
         loading,
         clients,
         update,
+        list_order,
+        new_os,
         setLoading,
         signUp,
         signIn,
@@ -161,6 +182,7 @@ function AuthProvider({ children }) {
         updateClient,
         createClient,
         deleteClient,
+        listOrder,
       }}>
       {children}
     </AuthContext.Provider>

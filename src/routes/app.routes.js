@@ -74,7 +74,7 @@ export default AppRoutes = () => {
         component={MyOS}
         options={({ navigation }) => ({
           title: 'Minhas OS',
-          headerShown: false,
+          // headerShown: false,
           headerRight: () => (
             <Button
               onPress={() => navigation.navigate('NewOS')}
