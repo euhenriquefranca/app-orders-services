@@ -19,14 +19,20 @@ export default function SignIn() {
 
   const { signUp } = useContext(AuthContext);
 
-  function handleSignUp() {
-    signUp(email, password, username);
+  async function handleSignUp() {
+    let obj = {
+      user: {
+        email: email,
+        password: password,
+      },
+    };
+    await signUp(obj);
   }
 
   return (
     <Background>
       <Container behavior={Platform.OS === 'ios' ? 'padding' : ''} enabled>
-        <AreaInput>
+        {/* <AreaInput>
           <Input
             placeholder="Nome"
             autoCorrect={false}
@@ -34,7 +40,7 @@ export default function SignIn() {
             value={username}
             onChangeText={text => setNome(text)}
           />
-        </AreaInput>
+        </AreaInput> */}
 
         <AreaInput>
           <Input

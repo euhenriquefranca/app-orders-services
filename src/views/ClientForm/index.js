@@ -24,12 +24,28 @@ export default function ClientForm({ route, navigation }) {
 
   const onSubmitForm = async () => {
     if (user.id) {
-      await updateClient(user.id, user);
+      let obj = {
+        customer: {
+          customer_name: user.customer_name,
+          document: user.document,
+          email: user.email,
+          phone: user.phone,
+        },
+      };
+      await updateClient(user.id, obj);
       setUser({ ...update });
-      console.log(clients, 'clients');
       navigation.goBack();
     } else {
-      await createClient(user);
+      let objCustomer = {
+        customer: {
+          customer_name: user.customer_name,
+          document: user.document,
+          customer_type: 1,
+          email: user.email,
+          phone: user.phone,
+        },
+      };
+      await createClient(objCustomer);
       navigation.goBack();
     }
   };
@@ -46,16 +62,16 @@ export default function ClientForm({ route, navigation }) {
               <Text>Name</Text>
               <TextInput
                 style={style.input}
-                onChangeText={onChangeText('client_name')}
+                onChangeText={onChangeText('customer_name')}
                 placeholder="Informe o nome"
-                value={user.client_name}
+                value={user.customer_name}
               />
               <Text>CNPJ</Text>
               <TextInput
                 style={style.input}
-                onChangeText={onChangeText('cnpj')}
+                onChangeText={onChangeText('document')}
                 placeholder="Informe o CNPJ"
-                value={user.cnpj}
+                value={user.document}
               />
 
               <Text>Email</Text>
@@ -71,13 +87,6 @@ export default function ClientForm({ route, navigation }) {
                 onChangeText={onChangeText('phone')}
                 placeholder="Informe o Phone"
                 value={user.phone}
-              />
-              <Text>Type</Text>
-              <TextInput
-                style={style.input}
-                onChangeText={onChangeText('type_client')}
-                placeholder="Informe o Type"
-                value={user.type_client}
               />
 
               <Button title="Salvar" onPress={onSubmitForm} />

@@ -14,7 +14,7 @@ import { AuthContext } from '../../context/auth';
 import { Container, Background, Nome, Form } from './styles';
 
 export default function NewOS({ route, navigation }) {
-  const {} = useContext(AuthContext);
+  const { createOrder } = useContext(AuthContext);
 
   const [user, setUser] = useState(route.params ? route.params : {});
 
@@ -25,9 +25,13 @@ export default function NewOS({ route, navigation }) {
     //   console.log(clients, 'clients');
     //   navigation.goBack();
     // } else {
-    //   await createClient(user);
-    //   navigation.goBack();
+    await createOrder(
+      user,
+      user.id,
+    );
+    navigation.goBack();
     // }
+    console.log(user, 'user');
   };
 
   const onChangeText = key => value => setUser({ ...user, [key]: value });
@@ -39,6 +43,13 @@ export default function NewOS({ route, navigation }) {
         <ScrollView>
           <KeyboardAvoidingView style={style.container} behavior="padding">
             <View style={style.form}>
+              <Text>Número da OS</Text>
+              <TextInput
+                style={style.input}
+                onChangeText={onChangeText('os_number')}
+                placeholder="Informe a OS"
+                value={user.os_number}
+              />
               <Text>Motivo do chamado</Text>
               <TextInput
                 style={style.input}

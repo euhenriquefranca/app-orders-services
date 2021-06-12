@@ -12,11 +12,13 @@ function AuthProvider({ children }) {
   const [update, setUpdate] = useState([]);
   const [list_order, setOrder] = useState([]);
   const [new_os, setNew] = useState(false);
+  const [detailOs, setDetailOs] = useState([]);
+  const [access, setAccess] = useState('');
 
   useEffect(() => {
     async function loadStorage() {
       const storageUser = await AsyncStorage.getItem('Auth_user');
-
+      JSON.parse(storageUser);
       if (storageUser) {
         setUser(JSON.parse(storageUser));
         setLoading(false);
@@ -28,44 +30,24 @@ function AuthProvider({ children }) {
 
   async function signIn(email, password) {
     await axios
-      .post(`${config.API_URL}/authenticate`, {
+      .post(`${config.API_URL}/auth/login`, {
         email,
         password,
       })
       .then(res => {
         setUser(res.data);
         storageUser(res.data);
-        console.log(res.data);
-      });
+        console.log('[******]', res.data);
+      })
+      .catch(error => console.log(error));
   }
 
-  async function signUp(email, password, username) {
-    await axios
-      .post(`${config.API_URL}/register`, {
-        username,
-        email,
-        password,
-      })
-      .then(res => {
-        setUser(res.data);
-        storageUser(res.data);
-        console.log(res.data);
-      });
-    // .catch(error => {
-    //   alert(error.code);
-    // });
-    //   // let uid = value.user.uid;
-    //   console.log(value, 'Value');
-    //   // await AsyncStorage.setItem('users', uid);
-    //   setUser(value);
-    // });
-    // .then(() => {
-    //   let data = {
-    //     uid: uid,
-    //     username: username,
-    //     email: value.user.email,
-    //   };
-    // });
+  async function signUp(data) {
+    await axios.post(`${config.API_URL}/users/new`, data).then(res => {
+      setUser(res.data);
+      storageUser(res.data);
+      console.log(res.data);
+    });
   }
   async function storageUser(res) {
     await AsyncStorage.setItem('Auth_user', JSON.stringify(res));
@@ -78,33 +60,44 @@ function AuthProvider({ children }) {
 
   async function clientList() {
     await axios
-      .get(`${config.API_URL}/clients`, {
+      .get(`${config.API_URL}/company/customers/list`, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${config.API_TOKEN}`,
+          Authorization: `Bearer ${user.access}`,
         },
       })
       .then(res => {
-        setClients(res.data ? res.data : setLoading(true));
+        setClients(res.data);
         setNew(false);
-        console.log(update, 'list clients');
       })
       .catch(error => {
         console.error(error);
       });
   }
 
-  async function updateClient(id, data) {
-    const url = `${config.API_URL}/clients/${id}`;
+  async function createClient(customers) {
+    const url = `${config.API_URL}/company/customers/new`;
     await axios
-      .put(url, data, {
+      .post(url, customers, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${config.API_TOKEN}`,
+          Authorization: `Bearer ${user.access}`,
         },
       })
+      .then(res => {
+        console.log('criado com sucesso', res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  async function updateClient(id, data) {
+    const url = `${config.API_URL}/company/customers/${id}/update`;
+    await axios
+      .put(url, data)
       .then(res => {
         console.log('atulizado com sucesso', data);
         setUpdate(res.data);
@@ -115,31 +108,14 @@ function AuthProvider({ children }) {
     return update;
   }
 
-  async function createClient(user) {
-    const url = `${config.API_URL}/clients`;
-    await axios
-      .post(url, user, {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${config.API_TOKEN}`,
-        },
-      })
-      .then(res => {
-        console.log('criado com sucesso', res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
   async function deleteClient(id) {
-    const url = `${config.API_URL}/clients/${id}`;
+    const url = `${config.API_URL}/company/customers/${id}/delete`;
     await axios
       .delete(url, {
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${config.API_TOKEN}`,
+          Authorization: `Bearer ${user.access}`,
         },
       })
       .then(response => {
@@ -160,7 +136,41 @@ function AuthProvider({ children }) {
       .then(response => {
         setOrder(response.data);
         setNew(true);
-        console.log(response, 'response');
+      });
+  }
+
+  async function detailOrder(id) {
+    const url = `${config.API_URL}/order_of_services/${id}`;
+    await axios
+      .get(url, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(response => {
+        setDetailOs(response.data);
+        console.log(response.data, 'Estou vendo os detalhes');
+        setNew(true);
+      });
+  }
+  async function createOrder(os, id) {
+    const url = `${config.API_URL}/customers/orders/new`;
+    await axios
+      .post(url, os, id, {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_TOKEN}`,
+        },
+      })
+      .then(response => {
+        console.log(response.data, 'creating...');
+        setNew(true);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -174,6 +184,7 @@ function AuthProvider({ children }) {
         update,
         list_order,
         new_os,
+        detailOs,
         setLoading,
         signUp,
         signIn,
@@ -183,6 +194,8 @@ function AuthProvider({ children }) {
         createClient,
         deleteClient,
         listOrder,
+        detailOrder,
+        createOrder,
       }}>
       {children}
     </AuthContext.Provider>

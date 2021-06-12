@@ -22,9 +22,6 @@ export default function Profile() {
     <Container>
       <Header />
       <Nome>{user && user.nome}</Nome>
-      <NewLink onPress={() => navigation.navigate('Registrar')}>
-        <NewText>Registrar</NewText>
-      </NewLink>
 
       <Logout onPress={() => signOut()}>
         <LogoutText>Sair</LogoutText>

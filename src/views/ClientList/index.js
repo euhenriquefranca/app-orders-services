@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 // import UsersContext from '../../context/UsersContext';
 import { AuthContext } from '../../context/auth';
 import GetUserItem from '../../components/CustomerList';
@@ -9,8 +9,6 @@ import { Container, Background, Nome, List, ButtonAdd } from './styles';
 import { Icon } from 'react-native-elements';
 
 export default function ClientList({ navigation }) {
-  // const navigation = useNavigation();
-  // const { state, movie, dispatch } = useContext(UsersContext);
   const { state, clients, clientList, deleteClient } = useContext(AuthContext);
   const [load, setLoad] = useState(true);
   useEffect(() => {

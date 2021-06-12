@@ -7,13 +7,16 @@ import { AuthContext } from '../../context/auth';
 import { Container } from './styles';
 
 export default function GetUserItem({ data }) {
-  const { deleteClient, new_os } = useContext(AuthContext);
+  const { deleteClient, new_os, detailOrder } = useContext(AuthContext);
   const navigation = useNavigation();
 
   const navigationToForm = (data = null) => () =>
     new_os == true
       ? navigation.navigate('NewOS', data)
       : navigation.navigate('ClientForm', data);
+  const navigationToFormOs = (data = null) => () => {
+    navigation.navigate('MyOS', data);
+  };
 
   const confirmUserDelete = data => () => {
     Alert.alert('Excluir Usuário', 'Deseja excluir o usuário?', [
@@ -30,11 +33,11 @@ export default function GetUserItem({ data }) {
       <ListItem
         bottomDivider
         key={data.id ? data.id : data.os_number}
-        onPress={navigationToForm}>
+        onPress={navigationToFormOs(data)}>
         <ListItem.Content style={style.listItemContent}>
           <View>
             <ListItem.Title>
-              {data.client_name ? data.client_name : data.reason_called}
+              {data.customer_name ? data.customer_name : data.reason_called}
             </ListItem.Title>
             <ListItem.Subtitle>
               {data.email ? data.email : data.message}
